@@ -1,0 +1,39 @@
+import dependencia.*
+import rodados.*
+import Pedido.*
+
+describe "test etapa 2" {
+
+	var cachito = new Corsa()
+	var pedido = new Pedido()
+
+	fixture {
+		cachito.color("rojo")
+		pedido.distancia(960)
+		pedido.tiempoMaximo(8)
+		pedido.cantPasajeros(4)
+		pedido.coloresIncompatibles().add("azul")
+		pedido.coloresIncompatibles().add("negro")
+	}
+
+	test "cachito puede realizar el pedido" {
+		assert.that(pedido.satisfacePedido(cachito))
+	}
+
+	test "color incompatible" {
+		pedido.coloresIncompatibles().add("rojo")
+		assert.notThat(pedido.satisfacePedido(cachito))
+	}
+
+	test "exceso de pasajeros" {
+		pedido.cantPasajeros(6)
+		assert.notThat(pedido.satisfacePedido(cachito))
+	}
+
+	test "menos tiempo" {
+		pedido.tiempoMaximo(6)
+		assert.notThat(pedido.satisfacePedido(cachito))
+	}
+
+}
+

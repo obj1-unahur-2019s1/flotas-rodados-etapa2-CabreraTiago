@@ -1,0 +1,55 @@
+import dependencia.*
+import rodados.*
+import Pedido.*
+
+describe "test etapa 3" {
+
+	var deportes = new Dependencia()
+	var pedido1 = new Pedido()
+	var pedido2 = new Pedido()
+	var pedido3 = new Pedido()
+	var coloresIncompatibles1 = ["verde", "naranja", "rojo"]
+	var coloresIncompatibles2 = ["azul", "rosa", "verde"]
+	var coloresIncompatibles3 = ["negro", "verde", "rosa"]
+
+	fixture {
+		deportes.empleados(45)
+		deportes.agregarAFlota(new Corsa(color = "negro"))
+		deportes.agregarAFlota(new Kwid(tieneTanqueAdicional = true))
+		deportes.agregarAFlota(new AutoEspecial(capacidad = 20, peso = 2500, velocidadMaxima = 180, color = "gris"))
+		
+		pedido1.cantPasajeros(33)
+		pedido1.distancia(900)
+		pedido1.tiempoMaximo(8)
+		pedido1.coloresIncompatibles(coloresIncompatibles1)
+		
+		pedido2.cantPasajeros(25)
+		pedido2.distancia(900)
+		pedido2.tiempoMaximo(8)
+		pedido2.coloresIncompatibles(coloresIncompatibles2)
+		
+		pedido3.cantPasajeros(2)
+		pedido3.distancia(100)
+		pedido3.tiempoMaximo(1)
+		pedido3.coloresIncompatibles(coloresIncompatibles3)
+		
+		deportes.agregarPedido(pedido1)
+		deportes.agregarPedido(pedido2)
+		deportes.agregarPedido(pedido3)
+	}
+	
+	test "total de pasajeros" {
+		assert.equals(60, deportes.totalPasajerosPedidos())
+	}
+	
+	test "pedidos no satisfechos" {
+		assert.equals(#{ pedido1, pedido2 }, deportes.pedidosNoSatisfechos())
+	}
+
+	test "color incompatible" {
+		assert.that(deportes.colorIncompatibleTotal("verde"))
+		assert.notThat(deportes.colorIncompatibleTotal("rosa"))
+	}
+
+}
+
