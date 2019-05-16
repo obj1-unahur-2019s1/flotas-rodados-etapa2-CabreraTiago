@@ -68,5 +68,11 @@ class Dependencia {
 		pedidos.forEach{ pedido => pedido.relajar()}
 	}
 
+	method extra() {
+//		return pedidos.fold([], { acumulado , p => acumulado + p.coloresIncompatibles() }).asSet()
+//		return pedidos.map{ pedido => pedido.coloresIncompatibles() }.flatten().asSet()
+		return pedidos.flatMap{ pedido => pedido.coloresIncompatibles() }.asSet()
+	}
+
 }
 
